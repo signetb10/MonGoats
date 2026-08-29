@@ -18,7 +18,7 @@ def _save_temp_upload(uploaded_file) -> str:
     return temp_path
 
 
-def create_knowledge_card(uploaded_file, language_code: str) -> KnowledgeCard:
+def create_knowledge_card(uploaded_file, language_code: str, owner=None) -> KnowledgeCard:
     temp_input_path = _save_temp_upload(uploaded_file)
     wav_path = None
     try:
@@ -39,6 +39,7 @@ def create_knowledge_card(uploaded_file, language_code: str) -> KnowledgeCard:
             summary=structured["summary"],
             key_points=structured["key_points"],
             source_media=uploaded_file,
+            owner=owner if (owner is not None and owner.is_authenticated) else None,
         )
     finally:
         os.remove(temp_input_path)

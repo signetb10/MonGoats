@@ -1,6 +1,24 @@
-<h1>Upload a clip</h1>
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Upload</button>
-</form>
+{% extends "base.html" %}
+{% block title %}Upload a clip — MonGoats{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <form method="post" enctype="multipart/form-data" class="auth-card">
+    {% csrf_token %}
+    <h1>Upload a clip</h1>
+    <p class="auth-sub">Drop in an audio or video file and pick its language — we'll transcribe, translate and summarize it automatically.</p>
+
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div class="field-error">{{ field.errors|striptags }}</div>{% endif %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary btn-block">Upload &amp; process</button>
+    {% if not user.is_authenticated %}
+      <p class="auth-switch"><a href="{% url 'login' %}">Log in</a> first if you want this saved to your profile.</p>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

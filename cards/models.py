@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -9,6 +10,14 @@ class KnowledgeCard(models.Model):
     ]
 
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="cards",
+        help_text="Who uploaded this clip. Null for anonymous/legacy uploads.",
+    )
     transcript = models.TextField()
     source_media = models.FileField(upload_to="cards/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

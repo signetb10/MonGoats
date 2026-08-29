@@ -1,14 +1,39 @@
-<h1>{{ card.title }}</h1>
-<p>{{ card.summary }}</p>
-<ul>
-  {% for point in card.key_points %}<li>{{ point }}</li>{% endfor %}
-</ul>
-<p><strong>Original ({{ card.get_language_display }}):</strong> {{ card.transcript }}</p>
-<p><strong>English:</strong> {{ card.translation }}</p>
-{% if card.source_media %}
-  {% if card.is_video %}
-    <video controls src="{{ card.source_media.url }}" style="max-width:100%;"></video>
-  {% else %}
-    <audio controls src="{{ card.source_media.url }}"></audio>
+{% extends "base.html" %}
+{% block title %}{{ card.title|default:"Knowledge card" }} — MonGoats{% endblock %}
+{% block content %}
+<div class="detail-page">
+  <span class="lang-badge">{{ card.get_language_display }}</span>
+  <h1>{{ card.title|default:"Untitled clip" }}</h1>
+  {% if card.owner %}<p class="muted">Uploaded by {{ card.owner.username }} &middot; {{ card.created_at|date:"M j, Y" }}</p>{% else %}<p class="muted">{{ card.created_at|date:"M j, Y" }}</p>{% endif %}
+
+  {% if card.source_media %}
+    <div class="detail-media">
+      {% if card.is_video %}
+        <video controls src="{{ card.source_media.url }}" style="max-width:100%;"></video>
+      {% else %}
+        <audio controls src="{{ card.source_media.url }}"></audio>
+      {% endif %}
+    </div>
   {% endif %}
-{% endif %}
+
+  {% if card.summary %}<p class="detail-summary">{{ card.summary }}</p>{% endif %}
+
+  {% if card.key_points %}
+    <h2>Key points</h2>
+    <ul>
+      {% for point in card.key_points %}<li>{{ point }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <div class="transcript-grid">
+    <div class="card-panel">
+      <h2>Original ({{ card.get_language_display }})</h2>
+      <p>{{ card.transcript }}</p>
+    </div>
+    <div class="card-panel">
+      <h2>English</h2>
+      <p>{{ card.translation }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
