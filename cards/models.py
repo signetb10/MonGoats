@@ -13,6 +13,12 @@ class KnowledgeCard(models.Model):
     source_media = models.FileField(upload_to="cards/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def is_video(self) -> bool:
+        if not self.source_media:
+            return False
+        return self.source_media.name.lower().endswith((".mp4", ".mov"))
+
     class Meta:
         ordering = ["-created_at"]
 
