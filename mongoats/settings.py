@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_htmx",
-    # "cards",  # uncomment once the cards app exists (next step, not yet)
+    "cards", 
 ]
 
 MIDDLEWARE = [
