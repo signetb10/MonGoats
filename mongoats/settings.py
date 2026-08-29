@@ -9,9 +9,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "insecure-dev-key-change-me")
 DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
-ALLOWED_HOSTS += ["mongoats.vercel.app", ".vercel.app"]
-CSRF_TRUSTED_ORIGINS = ['https://mongoats.vercel.app', 'https://*.vercel.app']
+
+# Vercel passes requests through a reverse proxy, so Django must trust the
+# forwarded host/origin and the HTTPS scheme sent by the proxy.
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if host.strip()]
+ALLOWED_HOSTS += ["mongoats.vercel.app", ".vercel.app", "localhost", "127.0.0.1"]
+
+vercel_url = os.environ.get("VERCEL_URL")
+if vercel_url:
+    ALLOWED_HOSTS.append(vercel_url)
+    ALLOWED_HOSTS.append(f"*.{vercel_url.split('.', 1)[1]}" if "." in vercel_url else vercel_url)
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://mongoats.vercel.app",
+    "https://*.vercel.app",
+    "https://localhost",
+    "http://localhost",
+]
+if vercel_url:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{vercel_url}")
+    CSRF_TRUSTED_ORIGINS.append(f"http://{vercel_url}")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
