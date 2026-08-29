@@ -36,7 +36,7 @@ class ChimegeTranscriber(Transcriber):
     PUSH_URL = "https://api.chimege.com/v1.2/stt-long"
     POLL_URL = "https://api.chimege.com/v1.2/stt-long-transcript"
     POLL_INTERVAL_SECONDS = 1.5
-    MAX_POLL_SECONDS = 300  # Chimege docs: ~1hr audio finishes in ~4min
+    MAX_POLL_SECONDS = 240
 
     TRANSCRIPT_FIELD = "transcription"
 
