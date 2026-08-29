@@ -1,0 +1,8 @@
+[phases.setup]
+aptPkgs = ["ffmpeg"]
+
+[phases.build]
+cmds = ["python manage.py collectstatic --noinput"]
+
+[start]
+cmd = "gunicorn mongoats.wsgi:application --bind 0.0.0.0:$PORT"

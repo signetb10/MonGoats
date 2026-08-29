@@ -17,6 +17,7 @@ SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
 # forwarded host/origin and the HTTPS scheme sent by the proxy.
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if host.strip()]
 ALLOWED_HOSTS += ["mongoats.vercel.app", ".vercel.app", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS += [".up.railway.app"]
 
 vercel_url = os.environ.get("VERCEL_URL")
 if vercel_url:
@@ -31,6 +32,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.vercel.app",
     "https://localhost",
     "http://localhost",
+    "https://*.up.railway.app",
 ]
 if vercel_url:
     CSRF_TRUSTED_ORIGINS.append(f"https://{vercel_url}")
