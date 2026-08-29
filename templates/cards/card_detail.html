@@ -1,5 +1,10 @@
-<h1>{{ card.get_language_display }} card</h1>
-<p>{{ card.transcript }}</p>
+<h1>{{ card.title }}</h1>
+<p>{{ card.summary }}</p>
+<ul>
+  {% for point in card.key_points %}<li>{{ point }}</li>{% endfor %}
+</ul>
+<p><strong>Original ({{ card.get_language_display }}):</strong> {{ card.transcript }}</p>
+<p><strong>English:</strong> {{ card.translation }}</p>
 {% if card.source_media %}
   {% if card.is_video %}
     <video controls src="{{ card.source_media.url }}" style="max-width:100%;"></video>

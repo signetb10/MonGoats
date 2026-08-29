@@ -4,6 +4,7 @@ import tempfile
 from .audio_utils import to_wav
 from .models import KnowledgeCard
 from .transcriber import get_transcriber
+from .translator import structure_content
 
 
 def _save_temp_upload(uploaded_file) -> str:
@@ -23,6 +24,7 @@ def create_knowledge_card(uploaded_file, language_code: str) -> KnowledgeCard:
     try:
         wav_path = to_wav(temp_input_path)
         transcript = get_transcriber(language_code).transcribe(wav_path)
+        structured = structure_content(transcript, language_code)
 
         # _save_temp_upload already consumed this file object's stream to
         # write the temp copy above — rewind it or Django saves 0 bytes
@@ -32,6 +34,10 @@ def create_knowledge_card(uploaded_file, language_code: str) -> KnowledgeCard:
         return KnowledgeCard.objects.create(
             language=language_code,
             transcript=transcript,
+            translation=structured["translation"],
+            title=structured["title"],
+            summary=structured["summary"],
+            key_points=structured["key_points"],
             source_media=uploaded_file,
         )
     finally:

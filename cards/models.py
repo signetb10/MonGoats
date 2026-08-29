@@ -12,6 +12,10 @@ class KnowledgeCard(models.Model):
     transcript = models.TextField()
     source_media = models.FileField(upload_to="cards/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    translation = models.TextField(blank=True, default="")
+    title = models.CharField(max_length=200, blank=True, default="")
+    summary = models.TextField(blank=True, default="")
+    key_points = models.JSONField(blank=True, default=list)
 
     @property
     def is_video(self) -> bool:
