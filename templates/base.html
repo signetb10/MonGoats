@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MonGoats{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header">
+      <a href="{% url 'home' %}" class="brand">
+        <span class="brand-mark">MonGoats</span>
+      </a>
+
+      <nav class="main-nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'about' %}">About Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="{% url 'upload' %}" class="btn btn-upload">
+          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M12 3l5 5h-3.5v7h-3V8H7z"/><path d="M5 19h14v2H5z"/></svg>
+          Upload
+        </a>
+
+        <div class="notif-wrapper">
+          <button type="button" class="btn-icon" id="notif-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M12 22a2.2 2.2 0 0 0 2.2-2.2h-4.4A2.2 2.2 0 0 0 12 22zm7-6.2V11a7 7 0 0 0-5.6-6.86V3a1.4 1.4 0 1 0-2.8 0v1.14A7 7 0 0 0 5 11v4.8L3 17.8V19h18v-1.2z"/></svg>
+            {% if notification_cards %}<span class="notif-dot"></span>{% endif %}
+          </button>
+          <div class="notif-dropdown" id="notif-dropdown" hidden>
+            <h4>Recent uploads</h4>
+            {% for n in notification_cards %}
+              <a href="{% url 'card_detail' n.pk %}" class="notif-item">
+                <strong>{{ n.title|default:"Processing..." }}</strong>
+                <span>{{ n.get_language_display }} &middot; {{ n.created_at|timesince }} ago</span>
+              </a>
+            {% empty %}
+              <p class="notif-empty">No uploads yet — be the first.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if user.is_authenticated %}
+          <div class="user-menu">
+            <a href="{% url 'profile' %}" class="btn-icon user-pill">{{ user.username|first|upper }}</a>
+          </div>
+          <form action="{% url 'logout' %}" method="post" class="inline-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost">Log out</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-ghost">Log in</a>
+          <a href="{% url 'signup' %}" class="btn btn-primary">Sign up</a>
+        {% endif %}
+      </div>
+    </header>
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message message-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <main class="site-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">MonGoats</div>
+        <nav class="footer-nav">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'about' %}">About Us</a>
+          <a href="{% url 'upload' %}">Upload</a>
+        </nav>
+        <p class="footer-credit">Built by Tuguldur Banidkhuu, Tengis Buyanbaatar &amp; Bayrjavkhlan Tuvshinbaatar — SYNCS Hackathon 2026.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

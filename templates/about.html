@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}About Us — MonGoats{% endblock %}
+{% block content %}
+<div class="about-page">
+  <h1>About MonGoats</h1>
+  <p class="lead">MonGoats archives oral stories that would otherwise only live in someone's memory — a grandparent's Mongolian folktale, a Japanese travel memory, a Russian recollection — and turns them into searchable, translated knowledge cards.</p>
+
+  <div class="about-grid">
+    <div class="card-panel">
+      <h2>The pipeline</h2>
+      <p>Upload audio or video → Chimege (Mongolian) or ElevenLabs (Japanese, Russian) transcribes it → Gemini translates and structures it into a title, summary and key points → it lands in the archive as a story card anyone can swipe through.</p>
+    </div>
+    <div class="card-panel">
+      <h2>The team</h2>
+      <ul class="team-list">
+        <li>Tuguldur Banidkhuu</li>
+        <li>Tengis Buyanbaatar</li>
+        <li>Bayrjavkhlan Tuvshinbaatar</li>
+      </ul>
+      <p class="muted">Built for SYNCS Hackathon 2026.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

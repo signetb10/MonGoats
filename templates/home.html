@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}MonGoats — Voices worth keeping{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hello-field" aria-hidden="true">
+    <span class="hello h1">Сайн уу</span>
+    <span class="hello h2">こんにちは</span>
+    <span class="hello h3" dir="rtl">مرحبا</span>
+    <span class="hello h4">Bawo</span>
+    <span class="hello h5">Jambo</span>
+    <span class="hello h6">Kia ora</span>
+  </div>
+
+  <div class="hero-copy">
+    <h1>Every language has a story.<br>Don't let it fade.</h1>
+    <p>Record it, transcribe it, translate it — MonGoats turns a voice memo in Mongolian, Japanese or Russian into a searchable knowledge card in seconds.</p>
+    <div class="hero-actions">
+      <a href="{% url 'upload' %}" class="btn btn-primary btn-lg">Upload a clip</a>
+      <a href="#feed" class="btn btn-ghost btn-lg">Browse stories ↓</a>
+    </div>
+  </div>
+</section>
+
+<section class="feed-section" id="feed">
+  <div class="feed-heading">
+    <h2>Stories from the archive</h2>
+    <div class="feed-controls">
+      <button type="button" class="feed-arrow" id="feed-prev" aria-label="Previous story">‹</button>
+      <button type="button" class="feed-arrow" id="feed-next" aria-label="Next story">›</button>
+    </div>
+  </div>
+
+  {% if cards %}
+    <div class="feed-track" id="feed-track">
+      {% for card in cards %}
+        <article class="story-card">
+          <div class="story-card-media">
+            {% if card.source_media %}
+              {% if card.is_video %}
+                <video controls src="{{ card.source_media.url }}" preload="metadata"></video>
+              {% else %}
+                <div class="audio-wrap">
+                  <audio controls src="{{ card.source_media.url }}" preload="metadata"></audio>
+                </div>
+              {% endif %}
+            {% else %}
+              <div class="story-card-placeholder">🎙️</div>
+            {% endif %}
+            <span class="lang-badge">{{ card.get_language_display }}</span>
+          </div>
+          <div class="story-card-body">
+            <h3>{{ card.title|default:"Processing..." }}</h3>
+            <p>{{ card.summary|default:card.translation|truncatewords:28 }}</p>
+            {% if card.owner %}<p class="muted small">by {{ card.owner.username }}</p>{% endif %}
+            <a href="{% url 'card_detail' card.pk %}" class="story-link">Read full story →</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="feed-empty">
+      <p>No stories yet. <a href="{% url 'upload' %}">Be the first to upload one.</a></p>
+    </div>
+  {% endif %}
+</section>
+
+{% endblock %}

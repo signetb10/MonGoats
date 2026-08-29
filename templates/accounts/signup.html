@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Sign up — MonGoats{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <form method="post" class="auth-card">
+    {% csrf_token %}
+    <h1>Join MonGoats</h1>
+    <p class="auth-sub">Create an account to save the clips you upload.</p>
+
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<div class="field-hint">{{ field.help_text|safe }}</div>{% endif %}
+        {% if field.errors %}<div class="field-error">{{ field.errors|striptags }}</div>{% endif %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary btn-block">Create account</button>
+    <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+  </form>
+</div>
+{% endblock %}
