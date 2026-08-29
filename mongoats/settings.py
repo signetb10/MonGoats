@@ -10,6 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "insecure-dev-key-change-me")
 DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS += ["mongoats.vercel.app", ".vercel.app"]
+CSRF_TRUSTED_ORIGINS = ['https://mongoats.vercel.app', 'https://*.vercel.app']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
