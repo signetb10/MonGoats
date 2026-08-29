@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
-
 from .forms import KnowledgeCardUploadForm
 from .services import create_knowledge_card
+from django.shortcuts import get_object_or_404, render, redirect
+from .models import KnowledgeCard
 
 
 def upload_view(request):
@@ -16,3 +16,7 @@ def upload_view(request):
     else:
         form = KnowledgeCardUploadForm()
     return render(request, "cards/upload.html", {"form": form})
+
+def card_detail_view(request, pk):
+    card = get_object_or_404(KnowledgeCard, pk=pk)
+    return render(request, "cards/card_detail.html", {"card": card})
