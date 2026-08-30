@@ -19,7 +19,7 @@ def compress_video(input_path: str, target_max_mb: int = 40) -> str:
             "-i", input_path,
             "-vf", "scale=-2:720",
             "-c:v", "libx264",
-            "-preset", "fast",
+            "-preset", "ultrafast",
             "-crf", "28",
             "-c:a", "aac",
             "-b:a", "96k",
