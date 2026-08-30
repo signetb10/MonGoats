@@ -23,6 +23,16 @@
 </section>
 
 <section class="feed-section" id="feed">
+  <form method="get" action="{% url 'home' %}#feed" class="search-form">
+    <input
+      type="text"
+      name="q"
+      value="{{ query }}"
+      placeholder="Search stories…"
+      class="search-input"
+    >
+    <button type="submit" class="btn btn-ghost">Search</button>
+  </form>
   <div class="feed-heading">
     <h2>Stories from the archive</h2>
     <div class="feed-controls">
